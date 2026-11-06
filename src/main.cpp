@@ -7,4 +7,6 @@ int main(int argc, char** argv) {
     std::printf("CAT%03u len=%u FRNs:", b.cat, b.len);
     for (int f : b.frns) std::printf(" %d", f);
     std::puts("");
+    if (b.has010) std::printf("I010: SAC=%u SIC=%u\n", b.sac, b.sic);
+    if (!b.complete) std::puts("(stopped at a field not implemented yet)");
 }
