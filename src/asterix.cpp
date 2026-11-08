@@ -34,6 +34,15 @@ bool decode_block(const std::vector<uint8_t>& b, Block& out) {
             out.sic = b[i + 1];
             i += 2;
             break;
+        
+        case 2: {  // I048/140 Time of Day, units of 1/128 s
+            if (i + 3 > b.size()) return false;
+            uint32_t raw = (b[i] << 16) | (b[i + 1] << 8) | b[i + 2];
+            out.has140 = true;
+            out.tod = raw / 128.0;
+            i += 3;
+            break;
+        }
         default:  //can't know its length stops here
             out.complete = false;
             return true;
