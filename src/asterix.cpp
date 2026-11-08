@@ -43,6 +43,17 @@ bool decode_block(const std::vector<uint8_t>& b, Block& out) {
             i += 3;
             break;
         }
+        case 3: {  // I048/020 Target Report Descriptor, variable length
+            if (i >= b.size()) return false;
+            out.has020 = true;
+            out.typ = b[i] >> 5;
+            bool more = true;
+            while (more) {
+                if (i >= b.size()) return false;
+                more = b[i++] & 1;   // lowest bit set = another byte follows
+            }
+            break;
+        }
         default:  //can't know its length stops here
             out.complete = false;
             return true;

@@ -12,6 +12,8 @@ struct Block {
     uint8_t sac = 0, sic = 0;
     bool has140 = false;
     double tod = 0;          // seconds since midnight UTC
+    bool has020 = false;
+    uint8_t typ = 0;         // detection type (0 = no detection ... 7 = Mode S )
 };
 
 std::vector<uint8_t> parse_hex(const std::string& s);
