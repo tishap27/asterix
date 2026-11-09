@@ -54,6 +54,16 @@ bool decode_block(const std::vector<uint8_t>& b, Block& out) {
             }
             break;
         }
+        case 4: {  // I048/040 Measured Position, polar
+            if (i + 4 > b.size()) return false;
+            uint16_t rho = (b[i] << 8) | b[i + 1];
+            uint16_t theta = (b[i + 2] << 8) | b[i + 3];
+            out.has040 = true;
+            out.rho_nm = rho / 256.0;              // 1/256 NM per bit
+            out.theta_deg = theta * 360.0 / 65536; // 360/2^16 deg per bit
+            i += 4;
+            break;
+        }
         default:  //can't know its length stops here
             out.complete = false;
             return true;
