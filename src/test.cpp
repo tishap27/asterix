@@ -27,5 +27,14 @@ int main() {
     // I020 with one extension byte
     assert(decode_block(parse_hex("30 00 0B E0 01 02 00 40 00 41 00"), b));
     assert(b.typ == 2 && b.complete);
+
+    // I010 + I140 + I020 + I040: rho 0x0100 = 1.0 NM, theta 0x4000 = 90 deg
+    assert(decode_block(parse_hex("30 00 0E F0 01 02 00 40 00 40 01 00 40 00"), b));
+    assert(b.has040 && b.rho_nm == 1.0 && b.theta_deg == 90.0 && b.complete);
+
+    // all five fields, squawk 1200 (octal) = 0x280
+    assert(decode_block(parse_hex("30 00 10 F8 01 02 00 40 00 40 01 00 40 00 02 80"), b));
+    assert(b.has070 && b.mode3a == 01200 && b.complete);
+
     std::puts("all tests passed");
 }

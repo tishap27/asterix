@@ -13,5 +13,7 @@ int main(int argc, char** argv) {
         std::printf("I140: %02d:%02d:%02d UTC\n", s / 3600, (s % 3600) / 60, s % 60);
     }
     if (b.has020) std::printf("I020: type=%u\n", b.typ);
+    if (b.has040) std::printf("I040: range=%.2f NM azimuth=%.2f deg\n", b.rho_nm, b.theta_deg);
+    if (b.has070) std::printf("I070: squawk=%04o\n", b.mode3a);
     if (!b.complete) std::puts("(stopped at a field not implemented yet)");
 }
