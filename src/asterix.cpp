@@ -64,6 +64,13 @@ bool decode_block(const std::vector<uint8_t>& b, Block& out) {
             i += 4;
             break;
         }
+        case 5: {  // I048/070 Mode-3/A code
+            if (i + 2 > b.size()) return false;
+            out.has070 = true;
+            out.mode3a = ((b[i] << 8) | b[i + 1]) & 0x0FFF;  // top 4 bits are flags
+            i += 2;
+            break;
+        }
         default:  //can't know its length stops here
             out.complete = false;
             return true;

@@ -17,6 +17,8 @@ struct Block {
     bool has040 = false;
     double rho_nm = 0;       // range nm
     double theta_deg = 0;    // azimuth in degrees
+     bool has070 = false;
+    uint16_t mode3a = 0;     // shown in octal
 };
 
 std::vector<uint8_t> parse_hex(const std::string& s);
