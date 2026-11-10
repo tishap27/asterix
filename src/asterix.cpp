@@ -71,6 +71,16 @@ bool decode_block(const std::vector<uint8_t>& b, Block& out) {
             i += 2;
             break;
         }
+
+        case 6: {  // I048/090 Flight Level, 1/4 FL per bit, two's complement
+            if (i + 2 > b.size()) return false;
+            int raw = ((b[i] << 8) | b[i + 1]) & 0x3FFF;  // top 2 bits are validity flags
+            if (raw & 0x2000) raw -= 0x4000;               // sign extend 14 bits
+            out.has090 = true;
+            out.fl = raw / 4.0;
+            i += 2;
+            break;
+        }
         default:  //can't know its length stops here
             out.complete = false;
             return true;

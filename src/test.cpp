@@ -47,5 +47,13 @@ int main() {
     assert(v.size() == 1 && bad == 1);
 
     
+    // all six fields, FL350 = 350 * 4 = 1400 = 0x0578
+    assert(decode_block(parse_hex("30 00 12 FC 01 02 00 40 00 40 01 00 40 00 02 80 05 78"), b));
+    assert(b.has090 && b.fl == 350.0 && b.complete);
+    // negative flight level: -10 FL = 0x3FD8 in 14 bit two's complement
+    assert(decode_block(parse_hex("30 00 12 FC 01 02 00 40 00 40 01 00 40 00 02 80 3F D8"), b));
+    assert(b.fl == -10.0);
+    
+
     std::puts("all tests passed");
 }

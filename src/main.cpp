@@ -17,6 +17,7 @@ static void print_block(const Block& b) {
     if (b.has020) std::printf("I020: type=%u\n", b.typ);
     if (b.has040) std::printf("I040: range=%.2f NM azimuth=%.2f deg\n", b.rho_nm, b.theta_deg);
     if (b.has070) std::printf("I070: squawk=%04o\n", b.mode3a);
+    if (b.has090) std::printf("I090: FL%03.0f\n", b.fl);
     if (!b.complete) std::puts("(stopped at a field not implemented yet)");
 }
 
