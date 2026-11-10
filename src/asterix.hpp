@@ -23,3 +23,5 @@ struct Block {
 
 std::vector<uint8_t> parse_hex(const std::string& s);
 bool decode_block(const std::vector<uint8_t>& b, Block& out);
+
+std::vector<Block> decode_stream(const std::vector<uint8_t>& data, size_t* bad = nullptr);
