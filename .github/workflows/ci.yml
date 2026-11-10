@@ -9,7 +9,7 @@ jobs:
         run: g++ -std=c++17 -Wall -Wextra -Isrc -o asterix src/main.cpp src/asterix.cpp
       - name: Build and run tests
         run: |
-          g++ -std=c++17 -Wall -Wextra -Isrc -o test_run tests/test.cpp src/asterix.cpp
+          g++ -std=c++17 -Wall -Wextra -Isrc -o test_run src/test.cpp src/asterix.cpp
           ./test_run
       - name: Decode sample capture
         run: ./asterix -f samples/capture.txt
