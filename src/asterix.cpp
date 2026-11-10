@@ -78,3 +78,19 @@ bool decode_block(const std::vector<uint8_t>& b, Block& out) {
     }
     return true;
 }
+
+std::vector<Block> decode_stream(const std::vector<uint8_t>& d, size_t* bad) {
+    std::vector<Block> out;
+    size_t nbad = 0, o = 0;
+    while (o < d.size()) {
+        if (d.size() - o < 3) { ++nbad; break; }
+        size_t len = (d[o + 1] << 8) | d[o + 2];
+        if (len < 4 || o + len > d.size()) { ++nbad; break; }  // broken length, can't resync
+        std::vector<uint8_t> chunk(d.begin() + o, d.begin() + o + len);
+        Block b;
+        if (decode_block(chunk, b)) out.push_back(b); else ++nbad;
+        o += len;
+    }
+    if (bad) *bad = nbad;
+    return out;
+}

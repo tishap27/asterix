@@ -36,5 +36,16 @@ int main() {
     assert(decode_block(parse_hex("30 00 10 F8 01 02 00 40 00 40 01 00 40 00 02 80"), b));
     assert(b.has070 && b.mode3a == 01200 && b.complete);
 
+
+        // two blocks back to back
+    size_t bad = 0;
+    auto v = decode_stream(parse_hex("30 00 06 80 01 02 30 00 09 C0 01 02 00 40 00"), &bad);
+    assert(v.size() == 2 && bad == 0);
+    assert(v[0].sac == 1 && v[1].tod == 128.0);
+    // truncated second block is counted as bad
+    v = decode_stream(parse_hex("30 00 06 80 01 02 30 00 09 C0"), &bad);
+    assert(v.size() == 1 && bad == 1);
+
+    
     std::puts("all tests passed");
 }
