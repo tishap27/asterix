@@ -19,6 +19,8 @@ struct Block {
     double theta_deg = 0;    // azimuth in degrees
      bool has070 = false;
     uint16_t mode3a = 0;     // shown in octal
+    bool has090 = false;
+    double fl = 0;           // flight level, 1 FL = 100 ft
 };
 
 std::vector<uint8_t> parse_hex(const std::string& s);
