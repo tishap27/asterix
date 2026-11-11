@@ -81,6 +81,19 @@ bool decode_block(const std::vector<uint8_t>& b, Block& out) {
             i += 2;
             break;
         }
+
+
+        case 7: {  // I048/130 Radar Plot Characteristics, compound: skipped for now
+            if (i >= b.size()) return false;
+            uint8_t p = b[i++];
+            if (p & 1) { out.complete = false; return true; }  // extended primary not supported
+            for (int bit = 7; bit >= 1; --bit)
+                if (p & (1 << bit)) {
+                    if (i >= b.size()) return false;
+                    ++i;  // each subfield is 1 byte
+                }
+            break;
+        }
         default:  //can't know its length stops here
             out.complete = false;
             return true;

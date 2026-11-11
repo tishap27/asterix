@@ -54,6 +54,9 @@ int main() {
     assert(decode_block(parse_hex("30 00 12 FC 01 02 00 40 00 40 01 00 40 00 02 80 3F D8"), b));
     assert(b.fl == -10.0);
     
+    // FRN 1-7 with I130 (primary 0x80 = one subfield, 1 byte) skipped
+    assert(decode_block(parse_hex("30 00 14 FE 01 02 00 40 00 40 01 00 40 00 02 80 05 78 80 10"), b));
+    assert(b.fl == 350.0 && b.complete);
 
     std::puts("all tests passed");
 }
