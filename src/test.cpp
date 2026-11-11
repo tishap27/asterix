@@ -58,5 +58,10 @@ int main() {
     assert(decode_block(parse_hex("30 00 14 FE 01 02 00 40 00 40 01 00 40 00 02 80 05 78 80 10"), b));
     assert(b.fl == 350.0 && b.complete);
 
+    // FRN 1-9: address C0FFEE, callsign "ACA123"
+    assert(decode_block(parse_hex("30 00 1E FF C0 01 02 00 40 00 40 01 00 40 00 02 80 05 78 80 10 C0 FF EE 04 30 71 CB 38 20"), b));
+    assert(b.has220 && b.icao == 0xC0FFEE);
+    assert(b.has240 && b.callsign == "ACA123" && b.complete);
+
     std::puts("all tests passed");
 }
