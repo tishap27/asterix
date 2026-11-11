@@ -7,8 +7,8 @@ int main() {
     assert(b.cat == 48 && b.frns.size() == 1 && b.frns[0] == 1);
     assert(b.has010 && b.sac == 1 && b.sic == 2 && b.complete);
 
-    assert(decode_block(parse_hex("30 00 08 81 40 01 02 AA"), b));
-    assert(b.frns.size() == 2 && b.frns[1] == 9);
+    assert(decode_block(parse_hex("30 00 08 81 20 01 02 AA"), b));
+    assert(b.frns.size() == 2 && b.frns[1] == 10);
     assert(b.sac == 1 && b.sic == 2 && !b.complete);
 
     assert(!decode_block(parse_hex("30 00 09 80"), b));
@@ -54,6 +54,14 @@ int main() {
     assert(decode_block(parse_hex("30 00 12 FC 01 02 00 40 00 40 01 00 40 00 02 80 3F D8"), b));
     assert(b.fl == -10.0);
     
+    // FRN 1-7 with I130 (primary 0x80 = one subfield, 1 byte) skipped
+    assert(decode_block(parse_hex("30 00 14 FE 01 02 00 40 00 40 01 00 40 00 02 80 05 78 80 10"), b));
+    assert(b.fl == 350.0 && b.complete);
+
+    // FRN 1-9: address C0FFEE, callsign "ACA123"
+    assert(decode_block(parse_hex("30 00 1E FF C0 01 02 00 40 00 40 01 00 40 00 02 80 05 78 80 10 C0 FF EE 04 30 71 CB 38 20"), b));
+    assert(b.has220 && b.icao == 0xC0FFEE);
+    assert(b.has240 && b.callsign == "ACA123" && b.complete);
 
     std::puts("all tests passed");
 }

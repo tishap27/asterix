@@ -7,6 +7,12 @@ std::vector<uint8_t> parse_hex(const std::string& s) {
     return out;
 }
 
+static char ia5(int v) {
+    if (v >= 1 && v <= 26) return static_cast<char>('A' + v - 1);
+    if (v >= 48 && v <= 57) return static_cast<char>('0' + (v - 48));
+    return ' ';
+}
+
 bool decode_block(const std::vector<uint8_t>& b, Block& out) {
     out = Block{};
     if (b.size() < 4) return false;
@@ -81,6 +87,38 @@ bool decode_block(const std::vector<uint8_t>& b, Block& out) {
             i += 2;
             break;
         }
+
+
+        case 7: {  // I048/130 Radar Plot Characteristics, compound: skipped for now
+            if (i >= b.size()) return false;
+            uint8_t p = b[i++];
+            if (p & 1) { out.complete = false; return true; }  // extended primary not supported
+            for (int bit = 7; bit >= 1; --bit)
+                if (p & (1 << bit)) {
+                    if (i >= b.size()) return false;
+                    ++i;  // each subfield is 1 byte
+                }
+            break;
+        }
+        
+        case 8:  // I048/220 Aircraft Address
+            if (i + 3 > b.size()) return false;
+            out.has220 = true;
+            out.icao = (b[i] << 16) | (b[i + 1] << 8) | b[i + 2];
+            i += 3;
+            break;
+        case 9: {  // I048/240 Aircraft Identification, 8 chars * 6 bits
+            if (i + 6 > b.size()) return false;
+            uint64_t bits = 0;
+            for (int k = 0; k < 6; ++k) bits = (bits << 8) | b[i + k];
+            std::string id;
+            for (int k = 7; k >= 0; --k) id += ia5(static_cast<int>((bits >> (k * 6)) & 0x3F));
+            while (!id.empty() && id.back() == ' ') id.pop_back();
+            out.has240 = true;
+            out.callsign = id;
+            i += 6;
+            break;
+        }
         default:  //can't know its length stops here
             out.complete = false;
             return true;
@@ -88,6 +126,7 @@ bool decode_block(const std::vector<uint8_t>& b, Block& out) {
     }
     return true;
 }
+
 
 std::vector<Block> decode_stream(const std::vector<uint8_t>& d, size_t* bad) {
     std::vector<Block> out;
