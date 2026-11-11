@@ -7,8 +7,8 @@ int main() {
     assert(b.cat == 48 && b.frns.size() == 1 && b.frns[0] == 1);
     assert(b.has010 && b.sac == 1 && b.sic == 2 && b.complete);
 
-    assert(decode_block(parse_hex("30 00 08 81 40 01 02 AA"), b));
-    assert(b.frns.size() == 2 && b.frns[1] == 9);
+    assert(decode_block(parse_hex("30 00 08 81 20 01 02 AA"), b));
+    assert(b.frns.size() == 2 && b.frns[1] == 10);
     assert(b.sac == 1 && b.sic == 2 && !b.complete);
 
     assert(!decode_block(parse_hex("30 00 09 80"), b));
