@@ -55,3 +55,7 @@ Tests also run on every push through GitHub Actions.
 | I048/130 | Plot characteristics (skipped, not decoded) |
 | I048/220 | Aircraft address |
 | I048/240 | Aircraft identification (callsign) |
+
+## Documentation
+- [Design and diagrams](docs/architecture.md)
+- [Interface control document](docs/ICD.md)
