@@ -1,6 +1,7 @@
 # asterix-decode
 C++17 ASTERIX decoder, CAT048 first.
 
+![CI](https://github.com/tishap27/asterix/actions/workflows/ci.yml/badge.svg)
 
 
 ## Project layout
@@ -9,6 +10,22 @@ C++17 ASTERIX decoder, CAT048 first.
 - `tests/test.cpp`: tests
 - `samples/capture.txt`: example capture
 
+
+
+Example output:
+```
+--- block 1 ---
+CAT048 len=30 FRNs: 1 2 3 4 5 6 7 8 9
+I010: SAC=1 SIC=2
+I140: 00:02:08 UTC
+I020: type=2
+I040: range=1.00 NM azimuth=90.00 deg
+I070: squawk=1200
+I090: FL350
+I220: address=C0FFEE
+I240: callsign=ACA123
+1 block(s) decoded, 0 bad
+```
 ## Tests
 ```
 g++ -std=c++17 -Wall -Wextra -Isrc -o test_run tests/test.cpp src/asterix.cpp
